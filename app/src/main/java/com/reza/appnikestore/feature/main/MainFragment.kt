@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.reza.appnikestore.common.NikeFragment
 import com.reza.appnikestore.databinding.FragmentMainBinding
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class MainFragment : NikeFragment() {
     private val mainViewModel: MainViewModel by viewModel()
@@ -19,7 +18,7 @@ class MainFragment : NikeFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
 

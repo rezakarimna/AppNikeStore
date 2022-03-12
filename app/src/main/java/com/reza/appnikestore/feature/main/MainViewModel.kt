@@ -9,7 +9,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 
 class MainViewModel(productRepository: ProductRepository) : NikeViewModel() {
     val productsLiveData = MutableLiveData<List<Product>> ()
@@ -28,7 +27,7 @@ class MainViewModel(productRepository: ProductRepository) : NikeViewModel() {
                 }
 
                 override fun onError(e: Throwable) {
-                   Timber.e(e)
+
                 }
 
             })
