@@ -12,8 +12,9 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -29,13 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
 }
 
 dependencies {
-     def koin_version = "2.2.0"
+    def koin_version = "2.2.0"
+    def nav_version = "2.4.1"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -58,6 +60,11 @@ dependencies {
     implementation "org.koin:koin-android-scope:$koin_version"
     // or Koin for Android Architecture ViewModel
     implementation "org.koin:koin-android-viewmodel:$koin_version"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-runtime-ktx:$nav_version"
+    implementation 'com.facebook.fresco:fresco:1.11.0'
 
 
 }

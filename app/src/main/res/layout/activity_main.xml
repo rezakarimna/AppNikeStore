@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".feature.main.MainActivity">
 
-    <fragment
-        android:id="@+id/fragmentContainer"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.reza.appnikestore.feature.main.MainFragment"
         android:layout_marginBottom="56dp"
         />
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationMain"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
