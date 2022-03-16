@@ -68,5 +68,6 @@
     <string name="favorites_help_message">برای حذف محصول انگشت خود را روی آن نگه دارید</string>
     <string name="orderHistory_orderId">شناسه سفارش</string>
     <string name="orderHistory_payable">مبلغ</string>
+    <string name="search">جستجو</string>
 
 </resources>
