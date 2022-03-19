@@ -10,6 +10,7 @@ import com.reza.appnikestore.data.repo.source.BannerRemoteDataSource
 import com.reza.appnikestore.data.repo.source.ProductLocalDataSource
 import com.reza.appnikestore.data.repo.source.ProductRemoteDataSource
 import com.reza.appnikestore.feature.main.MainViewModel
+import com.reza.appnikestore.feature.main.ProductListAdapter
 import com.reza.appnikestore.services.FrescoImageLoadingService
 import com.reza.appnikestore.services.ImageLoadingService
 import com.reza.appnikestore.services.http.createApiServiceInstance
@@ -33,6 +34,7 @@ class App : Application() {
                     ProductLocalDataSource()
                 )
             }
+            factory { ProductListAdapter(get()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }
             viewModel { MainViewModel(get(),get()) }
         }
