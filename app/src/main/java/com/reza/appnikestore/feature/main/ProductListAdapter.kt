@@ -2,7 +2,6 @@ package com.reza.appnikestore.feature.main
 
 import android.graphics.Paint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.reza.appnikestore.common.formatPrice
@@ -13,6 +12,7 @@ import com.reza.appnikestore.services.ImageLoadingService
 
 class ProductListAdapter(val imageLoadingService: ImageLoadingService) :
     RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
+    var onProductClickListener: OnProductClickListener? = null
     var products = ArrayList<Product>()
         set(value) {
             field = value
@@ -29,7 +29,7 @@ class ProductListAdapter(val imageLoadingService: ImageLoadingService) :
                 previousProductTV.text = formatPrice(product.previous_price)
                 previousProductTV.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 root.implementSpringAnimationTrait()
-                root.setOnClickListener {  }
+                root.setOnClickListener { onProductClickListener?.productClick(product) }
             }
         }
     }
@@ -44,4 +44,8 @@ class ProductListAdapter(val imageLoadingService: ImageLoadingService) :
     }
 
     override fun getItemCount(): Int = products.size
+
+    interface OnProductClickListener {
+        fun productClick(product: Product)
+    }
 }

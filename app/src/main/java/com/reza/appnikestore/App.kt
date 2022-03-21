@@ -1,6 +1,7 @@
 package com.reza.appnikestore
 
 import android.app.Application
+import android.os.Bundle
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.reza.appnikestore.data.repo.BannerRepository
 import com.reza.appnikestore.data.repo.BannerRepositoryImpl
@@ -9,6 +10,7 @@ import com.reza.appnikestore.data.repo.ProductRepositoryImpl
 import com.reza.appnikestore.data.repo.source.BannerRemoteDataSource
 import com.reza.appnikestore.data.repo.source.ProductLocalDataSource
 import com.reza.appnikestore.data.repo.source.ProductRemoteDataSource
+import com.reza.appnikestore.feature.ProductDetailViewModel
 import com.reza.appnikestore.feature.main.MainViewModel
 import com.reza.appnikestore.feature.main.ProductListAdapter
 import com.reza.appnikestore.services.FrescoImageLoadingService
@@ -37,6 +39,7 @@ class App : Application() {
             factory { ProductListAdapter(get()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }
             viewModel { MainViewModel(get(),get()) }
+            viewModel { (bundel: Bundle) -> ProductDetailViewModel(bundel) }
         }
 
         startKoin {

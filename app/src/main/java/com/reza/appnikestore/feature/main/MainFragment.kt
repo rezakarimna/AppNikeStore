@@ -1,19 +1,22 @@
 package com.reza.appnikestore.feature.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.reza.appnikestore.common.EXTRA_KEY_DATA
 import com.reza.appnikestore.common.NikeFragment
 import com.reza.appnikestore.common.convertDpToPixel
 import com.reza.appnikestore.data.Product
 import com.reza.appnikestore.databinding.FragmentMainBinding
+import com.reza.appnikestore.feature.product.ProductDetailActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainFragment : NikeFragment() {
+class MainFragment : NikeFragment() , ProductListAdapter.OnProductClickListener{
     private val mainViewModel: MainViewModel by viewModel()
     private lateinit var binding: FragmentMainBinding
     val productListAdapter: ProductListAdapter by inject()
@@ -32,7 +35,7 @@ class MainFragment : NikeFragment() {
         binding.latestProductsRv.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.latestProductsRv.adapter = productListAdapter
-
+        productListAdapter.onProductClickListener = this
 
         mainViewModel.productsLiveData.observe(viewLifecycleOwner) {
             productListAdapter.products = it as ArrayList<Product>
@@ -54,5 +57,11 @@ class MainFragment : NikeFragment() {
             binding.bannerSliderViewPager.layoutParams = layoutParams
             binding.sliderIndicator.setViewPager2(binding.bannerSliderViewPager)
         }
+    }
+
+    override fun productClick(product: Product) {
+        startActivity(Intent(requireContext() , ProductDetailActivity::class.java).apply {
+            putExtra(EXTRA_KEY_DATA , product)
+        })
     }
 }

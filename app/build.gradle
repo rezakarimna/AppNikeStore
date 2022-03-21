@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+    implementation 'androidx.navigation:navigation-ui:2.4.1'
     def koin_version = "2.2.0"
     def nav_version = "2.4.1"
     implementation 'androidx.core:core-ktx:1.7.0'
