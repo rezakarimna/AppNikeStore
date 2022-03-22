@@ -1,5 +1,6 @@
 package com.reza.appnikestore.feature.product
 
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,11 +8,13 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reza.appnikestore.R
+import com.reza.appnikestore.common.EXTRA_KEY_ID
 import com.reza.appnikestore.common.formatPrice
 import com.reza.appnikestore.common.implementSpringAnimationTrait
 import com.reza.appnikestore.data.Comment
 import com.reza.appnikestore.databinding.ActivityProductDetailBinding
 import com.reza.appnikestore.feature.ProductDetailViewModel
+import com.reza.appnikestore.feature.product.comment.CommentListActivity
 import com.reza.appnikestore.services.ImageLoadingService
 import com.reza.appnikestore.view.scroll.ObservableScrollViewCallbacks
 import com.reza.appnikestore.view.scroll.ScrollState
@@ -69,16 +72,26 @@ class ProductDetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun observeListComments() {
+        productDetailViewModel.commentLiveData.observe(this) {
+            commentAdapter.comments = it as ArrayList<Comment>
+            if (it.size > 3) {
+                binding.viewAllCommentsBtn.visibility = View.VISIBLE
+                setClickMoveToCommentListActivity()
+            }
+        }
+    }
+
     private fun intiRecyclerView() {
         binding.commentsRv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.commentsRv.adapter = commentAdapter
     }
 
-    private fun observeListComments() {
-        productDetailViewModel.commentLiveData.observe(this) {
-            commentAdapter.comments = it as ArrayList<Comment>
-            if (it.size > 3)
-                binding.viewAllCommentsBtn.visibility = View.VISIBLE
+    private fun setClickMoveToCommentListActivity() {
+        binding.viewAllCommentsBtn.setOnClickListener {
+            startActivity(Intent(this, CommentListActivity::class.java).apply {
+                putExtra(EXTRA_KEY_ID, productDetailViewModel.productLiveData.value!!.id)
+            })
         }
     }
 

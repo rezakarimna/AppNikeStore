@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.reza.appnikestore" >
+    package="com.reza.appnikestore">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppNikeStore"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m" >
+        tools:targetApi="m">
+        <activity
+            android:name=".feature.product.comment.CommentListActivity"
+            android:exported="true" />
         <activity
             android:name=".feature.product.ProductDetailActivity"
             android:exported="true"
@@ -22,7 +25,7 @@
             android:theme="@style/Theme.AppNikeStore.NoActionBar" />
         <activity
             android:name=".feature.main.MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

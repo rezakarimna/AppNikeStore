@@ -8,6 +8,7 @@ import com.reza.appnikestore.data.repo.source.*
 import com.reza.appnikestore.feature.ProductDetailViewModel
 import com.reza.appnikestore.feature.main.MainViewModel
 import com.reza.appnikestore.feature.main.ProductListAdapter
+import com.reza.appnikestore.feature.product.comment.CommentListViewModel
 import com.reza.appnikestore.services.FrescoImageLoadingService
 import com.reza.appnikestore.services.ImageLoadingService
 import com.reza.appnikestore.services.http.createApiServiceInstance
@@ -34,8 +35,9 @@ class App : Application() {
             factory { ProductListAdapter(get()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }
             factory<CommentRepository> { CommentRepositoryImpl(CommentRemoteDataSource(get())) }
-            viewModel { MainViewModel(get(),get()) }
-            viewModel { (bundel: Bundle) -> ProductDetailViewModel(bundel , get()) }
+            viewModel { MainViewModel(get(), get()) }
+            viewModel { (bundel: Bundle) -> ProductDetailViewModel(bundel, get()) }
+            viewModel { (productId: Int) -> CommentListViewModel(productId, get()) }
         }
 
         startKoin {
