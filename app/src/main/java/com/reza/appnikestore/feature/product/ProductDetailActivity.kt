@@ -3,9 +3,13 @@ package com.reza.appnikestore.feature.product
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.reza.appnikestore.R
 import com.reza.appnikestore.common.formatPrice
 import com.reza.appnikestore.common.implementSpringAnimationTrait
+import com.reza.appnikestore.data.Comment
 import com.reza.appnikestore.databinding.ActivityProductDetailBinding
 import com.reza.appnikestore.feature.ProductDetailViewModel
 import com.reza.appnikestore.services.ImageLoadingService
@@ -17,8 +21,9 @@ import org.koin.core.parameter.parametersOf
 
 class ProductDetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityProductDetailBinding
-    val productDetailViewModel: ProductDetailViewModel by viewModel { parametersOf(intent.extras) }
-    val imageLoadingService: ImageLoadingService by inject()
+    private val productDetailViewModel: ProductDetailViewModel by viewModel { parametersOf(intent.extras) }
+    private val imageLoadingService: ImageLoadingService by inject()
+    private val commentAdapter = CommentAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
@@ -28,6 +33,8 @@ class ProductDetailActivity : AppCompatActivity() {
             setAnimationScrollImageProduct()
         }
 
+        observeListComments()
+        intiRecyclerView()
     }
 
     private fun observeProduct() {
@@ -60,6 +67,19 @@ class ProductDetailActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun intiRecyclerView() {
+        binding.commentsRv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.commentsRv.adapter = commentAdapter
+    }
+
+    private fun observeListComments() {
+        productDetailViewModel.commentLiveData.observe(this) {
+            commentAdapter.comments = it as ArrayList<Comment>
+            if (it.size > 3)
+                binding.viewAllCommentsBtn.visibility = View.VISIBLE
+        }
     }
 
 }

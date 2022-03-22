@@ -1,6 +1,7 @@
 package com.reza.appnikestore.services.http
 
 import com.reza.appnikestore.data.Banner
+import com.reza.appnikestore.data.Comment
 import com.reza.appnikestore.data.Product
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -15,6 +16,9 @@ interface ApiService {
 
     @GET("banner/slider")
     fun getBanners(): Single<List<Banner>>
+
+    @GET("comment/list")
+    fun getComments(@Query("product_id") productId: Int): Single<List<Comment>>
 }
 
 fun createApiServiceInstance(): ApiService {

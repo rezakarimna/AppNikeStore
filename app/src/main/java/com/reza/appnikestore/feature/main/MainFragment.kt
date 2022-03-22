@@ -19,7 +19,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class MainFragment : NikeFragment() , ProductListAdapter.OnProductClickListener{
     private val mainViewModel: MainViewModel by viewModel()
     private lateinit var binding: FragmentMainBinding
-    val productListAdapter: ProductListAdapter by inject()
+    private val productListAdapter: ProductListAdapter by inject()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
