@@ -14,12 +14,14 @@ class CommentListViewModel(protectedId: Int, commentRepository: CommentRepositor
     val commentsLiveData = MutableLiveData<List<Comment>>()
 
     init {
+        progressBarLiveData.value = true
         getComments(protectedId, commentRepository)
     }
 
     private fun getComments(protectedId: Int, commentRepository: CommentRepository) {
         commentRepository.getAllComments(protectedId)
             .asyncNetWorkRequest()
+            .doFinally { progressBarLiveData.value = false }
             .subscribe(object : NikeSingleObserver<List<Comment>>(compositeDisposable) {
                 override fun onSuccess(t: List<Comment>) {
                     commentsLiveData.value = t

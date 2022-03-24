@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reza.appnikestore.R
 import com.reza.appnikestore.common.EXTRA_KEY_ID
+import com.reza.appnikestore.common.NikeActivity
 import com.reza.appnikestore.common.formatPrice
 import com.reza.appnikestore.common.implementSpringAnimationTrait
 import com.reza.appnikestore.data.Comment
@@ -22,7 +23,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ProductDetailActivity : AppCompatActivity() {
+class ProductDetailActivity : NikeActivity() {
     lateinit var binding: ActivityProductDetailBinding
     private val productDetailViewModel: ProductDetailViewModel by viewModel { parametersOf(intent.extras) }
     private val imageLoadingService: ImageLoadingService by inject()
@@ -31,6 +32,8 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        observeProgressbar()
+
         observeProduct()
         binding.productIv.post {
             setAnimationScrollImageProduct()
@@ -38,6 +41,13 @@ class ProductDetailActivity : AppCompatActivity() {
 
         observeListComments()
         intiRecyclerView()
+        observeProgressbar()
+    }
+
+    private fun observeProgressbar() {
+        productDetailViewModel.progressBarLiveData.observe(this) {
+            setProgressIndicator(it)
+        }
     }
 
     private fun observeProduct() {
@@ -94,5 +104,6 @@ class ProductDetailActivity : AppCompatActivity() {
             })
         }
     }
+
 
 }

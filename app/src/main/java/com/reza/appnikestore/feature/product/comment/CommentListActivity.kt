@@ -2,19 +2,21 @@ package com.reza.appnikestore.feature.product.comment
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reza.appnikestore.common.EXTRA_KEY_ID
+import com.reza.appnikestore.common.NikeActivity
 import com.reza.appnikestore.data.Comment
 import com.reza.appnikestore.databinding.ActivityCommentListBinding
 import com.reza.appnikestore.feature.product.CommentAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CommentListActivity : AppCompatActivity() {
+class CommentListActivity : NikeActivity() {
     lateinit var binding: ActivityCommentListBinding
     private val commentAdapter = CommentAdapter(true)
-    val viewModel: CommentListViewModel by viewModel {
+    private val viewModel: CommentListViewModel by viewModel {
         parametersOf(
             intent.extras!!.getInt(
                 EXTRA_KEY_ID
@@ -26,8 +28,16 @@ class CommentListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCommentListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        observeProgressbar()
         observeCommentList()
         intiRecyclerView()
+        onBack()
+    }
+
+    private fun observeProgressbar() {
+        viewModel.progressBarLiveData.observe(this) {
+            setProgressIndicator(it)
+        }
     }
 
     private fun observeCommentList() {
@@ -40,4 +50,10 @@ class CommentListActivity : AppCompatActivity() {
         binding.commentsRv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.commentsRv.adapter = commentAdapter
     }
+
+    private fun onBack() {
+        binding.commentListToolbar.onBackButtonClickListener = View.OnClickListener { finish() }
+    }
+
+
 }
