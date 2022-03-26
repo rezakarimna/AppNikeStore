@@ -6,8 +6,9 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.reza.appnikestore.data.repo.*
 import com.reza.appnikestore.data.repo.source.*
 import com.reza.appnikestore.feature.ProductDetailViewModel
-import com.reza.appnikestore.feature.main.MainViewModel
-import com.reza.appnikestore.feature.main.ProductListAdapter
+import com.reza.appnikestore.feature.common.ProductListAdapter
+import com.reza.appnikestore.feature.list.ProductListViewModel
+import com.reza.appnikestore.feature.main.HomeViewModel
 import com.reza.appnikestore.feature.product.comment.CommentListViewModel
 import com.reza.appnikestore.services.FrescoImageLoadingService
 import com.reza.appnikestore.services.ImageLoadingService
@@ -32,12 +33,14 @@ class App : Application() {
                     ProductLocalDataSource()
                 )
             }
-            factory { ProductListAdapter(get()) }
+            factory { (viewType: Int) -> ProductListAdapter(viewType, get()) }
             factory<BannerRepository> { BannerRepositoryImpl(BannerRemoteDataSource(get())) }
             factory<CommentRepository> { CommentRepositoryImpl(CommentRemoteDataSource(get())) }
-            viewModel { MainViewModel(get(), get()) }
+            viewModel { HomeViewModel(get(), get()) }
             viewModel { (bundel: Bundle) -> ProductDetailViewModel(bundel, get()) }
             viewModel { (productId: Int) -> CommentListViewModel(productId, get()) }
+            viewModel { (sort: Int) -> ProductListViewModel(sort, get()) }
+
         }
 
         startKoin {

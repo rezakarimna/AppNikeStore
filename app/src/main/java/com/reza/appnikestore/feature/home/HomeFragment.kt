@@ -1,4 +1,4 @@
-package com.reza.appnikestore.feature.main
+package com.reza.appnikestore.feature.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,21 +11,28 @@ import com.reza.appnikestore.common.EXTRA_KEY_DATA
 import com.reza.appnikestore.common.NikeFragment
 import com.reza.appnikestore.common.convertDpToPixel
 import com.reza.appnikestore.data.Product
-import com.reza.appnikestore.databinding.FragmentMainBinding
+import com.reza.appnikestore.data.SORT_LATEST
+import com.reza.appnikestore.databinding.FragmentHomeBinding
+import com.reza.appnikestore.feature.common.ProductListAdapter
+import com.reza.appnikestore.feature.common.VIEW_TYPE_ROUND
+import com.reza.appnikestore.feature.list.ProductListActivity
+import com.reza.appnikestore.feature.main.BannerSliderAdapter
+import com.reza.appnikestore.feature.main.HomeViewModel
 import com.reza.appnikestore.feature.product.ProductDetailActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-class MainFragment : NikeFragment() , ProductListAdapter.OnProductClickListener{
-    private val mainViewModel: MainViewModel by viewModel()
-    private lateinit var binding: FragmentMainBinding
-    private val productListAdapter: ProductListAdapter by inject()
+class HomeFragment : NikeFragment(), ProductListAdapter.ProductEventListener {
+    private val homeViewModel: HomeViewModel by viewModel()
+    private lateinit var binding: FragmentHomeBinding
+    private val productListAdapter: ProductListAdapter by inject { parametersOf(VIEW_TYPE_ROUND) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -35,15 +42,15 @@ class MainFragment : NikeFragment() , ProductListAdapter.OnProductClickListener{
         binding.latestProductsRv.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.latestProductsRv.adapter = productListAdapter
-        productListAdapter.onProductClickListener = this
+        productListAdapter.productEventListener = this
 
-        mainViewModel.productsLiveData.observe(viewLifecycleOwner) {
+        homeViewModel.productsLiveData.observe(viewLifecycleOwner) {
             productListAdapter.products = it as ArrayList<Product>
         }
-        mainViewModel.progressBarLiveData.observe(viewLifecycleOwner) {
+        homeViewModel.progressBarLiveData.observe(viewLifecycleOwner) {
             setProgressIndicator(it)
         }
-        mainViewModel.bannerLiveData.observe(viewLifecycleOwner) {
+        homeViewModel.bannerLiveData.observe(viewLifecycleOwner) {
             val bannerSliderAdapter = BannerSliderAdapter(this, it)
             binding.bannerSliderViewPager.adapter = bannerSliderAdapter
             binding.bannerSliderViewPager.adapter = bannerSliderAdapter
@@ -57,11 +64,20 @@ class MainFragment : NikeFragment() , ProductListAdapter.OnProductClickListener{
             binding.bannerSliderViewPager.layoutParams = layoutParams
             binding.sliderIndicator.setViewPager2(binding.bannerSliderViewPager)
         }
+        moveToProductListActivity()
     }
 
-    override fun productClick(product: Product) {
-        startActivity(Intent(requireContext() , ProductDetailActivity::class.java).apply {
-            putExtra(EXTRA_KEY_DATA , product)
+    override fun onProductClick(product: Product) {
+        startActivity(Intent(requireContext(), ProductDetailActivity::class.java).apply {
+            putExtra(EXTRA_KEY_DATA, product)
         })
+    }
+
+    fun moveToProductListActivity() {
+        binding.viewLatestProductsBtn.setOnClickListener {
+            startActivity(Intent(requireContext(), ProductListActivity::class.java).apply {
+                putExtra(EXTRA_KEY_DATA, SORT_LATEST)
+            })
+        }
     }
 }

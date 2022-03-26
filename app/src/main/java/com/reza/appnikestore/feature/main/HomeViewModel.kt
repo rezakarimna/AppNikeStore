@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 
 import io.reactivex.schedulers.Schedulers
 
-class MainViewModel(productRepository: ProductRepository, bannerRepository: BannerRepository) :
+class HomeViewModel(productRepository: ProductRepository, bannerRepository: BannerRepository) :
     NikeViewModel() {
     val productsLiveData = MutableLiveData<List<Product>>()
     val bannerLiveData = MutableLiveData<List<Banner>>()
