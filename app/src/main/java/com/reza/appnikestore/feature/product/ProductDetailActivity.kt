@@ -33,15 +33,14 @@ class ProductDetailActivity : NikeActivity() {
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         observeProgressbar()
-
         observeProduct()
         binding.productIv.post {
             setAnimationScrollImageProduct()
         }
-
         observeListComments()
         intiRecyclerView()
         observeProgressbar()
+        onBack()
     }
 
     private fun observeProgressbar() {
@@ -105,5 +104,8 @@ class ProductDetailActivity : NikeActivity() {
         }
     }
 
+    fun onBack() {
+        binding.backBtn.setOnClickListener { finish() }
+    }
 
 }

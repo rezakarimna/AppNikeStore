@@ -52,7 +52,9 @@ class CommentListActivity : NikeActivity() {
     }
 
     private fun onBack() {
-        binding.commentListToolbar.onBackButtonClickListener = View.OnClickListener { finish() }
+        binding.commentListToolbar.onBackButtonClickListener = View.OnClickListener {
+            finish()
+        }
     }
 
 

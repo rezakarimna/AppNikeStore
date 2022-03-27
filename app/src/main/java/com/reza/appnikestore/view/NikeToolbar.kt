@@ -11,13 +11,14 @@ import com.reza.appnikestore.databinding.ViewToolbarBinding
 
 class NikeToolbar(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
     private val binding =
-        ViewToolbarBinding.inflate(LayoutInflater.from(context) , this , true)
+        ViewToolbarBinding.inflate(LayoutInflater.from(context), this, true)
 
-    var onBackButtonClickListener : View.OnClickListener? = null
-    set(value) {
-        field = value
-        binding.backBtn.setOnClickListener { onBackButtonClickListener}
-    }
+    var onBackButtonClickListener: View.OnClickListener? = null
+        set(value) {
+            field = value
+            binding.backBtn.setOnClickListener(onBackButtonClickListener)
+        }
+
     init {
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.NikeToolbar)
