@@ -17,7 +17,9 @@
         tools:targetApi="m">
         <activity
             android:name=".feature.auth.AuthActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.Nike.AuthTheme"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".feature.list.ProductListActivity"
             android:exported="true" />
