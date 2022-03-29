@@ -8,10 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.reza.appnikestore.R
-import com.reza.appnikestore.common.EXTRA_KEY_ID
-import com.reza.appnikestore.common.NikeActivity
-import com.reza.appnikestore.common.formatPrice
-import com.reza.appnikestore.common.implementSpringAnimationTrait
+import com.reza.appnikestore.common.*
 import com.reza.appnikestore.data.Comment
 import com.reza.appnikestore.databinding.ActivityProductDetailBinding
 import com.reza.appnikestore.feature.ProductDetailViewModel
@@ -19,6 +16,9 @@ import com.reza.appnikestore.feature.product.comment.CommentListActivity
 import com.reza.appnikestore.services.ImageLoadingService
 import com.reza.appnikestore.view.scroll.ObservableScrollViewCallbacks
 import com.reza.appnikestore.view.scroll.ScrollState
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -28,6 +28,7 @@ class ProductDetailActivity : NikeActivity() {
     private val productDetailViewModel: ProductDetailViewModel by viewModel { parametersOf(intent.extras) }
     private val imageLoadingService: ImageLoadingService by inject()
     private val commentAdapter = CommentAdapter()
+    private val compositeDisposable = CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
@@ -40,6 +41,7 @@ class ProductDetailActivity : NikeActivity() {
         observeListComments()
         intiRecyclerView()
         observeProgressbar()
+        binding.addToCartBtn.setOnClickListener { observeAddToCart() }
         onBack()
     }
 
@@ -104,8 +106,26 @@ class ProductDetailActivity : NikeActivity() {
         }
     }
 
-    fun onBack() {
+    private fun observeAddToCart() {
+        productDetailViewModel.onAddToCartBtn()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : NikeCompletableObserver(compositeDisposable) {
+                override fun onComplete() {
+                    showSnackBar(getString(R.string.success_addToCart))
+                }
+
+            })
+    }
+
+    private fun onBack() {
         binding.backBtn.setOnClickListener { finish() }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
 
 }

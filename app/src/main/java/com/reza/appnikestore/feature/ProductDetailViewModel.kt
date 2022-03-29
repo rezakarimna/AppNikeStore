@@ -8,13 +8,20 @@ import com.reza.appnikestore.common.NikeViewModel
 import com.reza.appnikestore.common.asyncNetWorkRequest
 import com.reza.appnikestore.data.Comment
 import com.reza.appnikestore.data.Product
+import com.reza.appnikestore.data.repo.CartRepository
 import com.reza.appnikestore.data.repo.CommentRepository
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ProductDetailViewModel(bundle: Bundle,commentRepository: CommentRepository):NikeViewModel() {
+class ProductDetailViewModel(
+    bundle: Bundle,
+    commentRepository: CommentRepository,
+    val cartRepository: CartRepository
+) : NikeViewModel() {
     val productLiveData = MutableLiveData<Product>()
     val commentLiveData = MutableLiveData<List<Comment>>()
+
     init {
         productLiveData.value = bundle.getParcelable(EXTRA_KEY_DATA)
         progressBarLiveData.value = true
@@ -27,4 +34,7 @@ class ProductDetailViewModel(bundle: Bundle,commentRepository: CommentRepository
                 }
             })
     }
+
+    fun onAddToCartBtn(): Completable =
+        cartRepository.addToCart(productLiveData.value!!.id).ignoreElement()
 }
